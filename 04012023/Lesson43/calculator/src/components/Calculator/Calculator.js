@@ -1,5 +1,6 @@
 import "./Calculator.scss";
 import { useState } from "react";
+import { useCalculator } from "../../hooks/utils";
 
 const KEYS = [
   [1, 2, 3, "+"],
@@ -9,6 +10,8 @@ const KEYS = [
 ];
 
 function Calculator() {
+  const { isOperator, isNumber, isEquals } = useCalculator();
+
   const [display, setDisplay] = useState("0");
   const [operator, setOperator] = useState(null);
   const [firstOperand, setFirstOperand] = useState(null);
@@ -17,12 +20,7 @@ function Calculator() {
   const btnClicked = (key) => {
     console.log(key);
     if (resultReady) return;
-    if (
-      operator !== null &&
-      firstOperand !== null &&
-      (key === "+" || key === "-" || key === "*" || key === "/")
-    )
-      return;
+    if (operator !== null && firstOperand !== null && isOperator(key)) return;
 
     if (key === "=") {
       const secondOperand = display;
